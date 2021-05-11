@@ -15,6 +15,9 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
 $responseFactory = new \Laminas\Diactoros\ResponseFactory();
 
 $strategy = new League\Route\Strategy\JsonStrategy($responseFactory);
+$strategy->addResponseDecorator(function (ResponseInterface $response) {
+   return $response->withAddedHeader('charset', 'utf-8');
+});
 $router   = (new League\Route\Router)->setStrategy($strategy);
 
 $isDevMode = true;
