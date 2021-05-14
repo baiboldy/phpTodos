@@ -15,18 +15,29 @@ class TodoRepository extends EntityRepository implements IBaseRepository
         $this->entityRepository = $this->entityManager->getRepository('Todo');
     }
 
-    public function getAll(int $pageNumber): array
+    public function getAll(array $filter = [], int $pageNumber = 0): array
     {
+
         $resultCount = 2;
         $result = $this->entityManager
             ->createQueryBuilder()
             ->select('d')
-            ->from('Todo', 'd')
+            ->from('Todo', 'd');
+
+        if (isset($filter) and count($filter) > 0) {
+            print_r('Hello');
+            $filterResult = '';
+            foreach ($filter as $key => $value){
+                $filterResult = $filterResult . "d." . $key . " like '%" . $value . "%'";
+            }
+            $result->where($filterResult);
+        }
+
+
+        $result = $result->getQuery()
             ->setFirstResult($pageNumber)
             ->setMaxResults($resultCount)
-            ->getQuery()
             ->getResult();
-//        $result = $this->entityRepository->findAll();
         return $result;
     }
     public function getById(int $id) : object
