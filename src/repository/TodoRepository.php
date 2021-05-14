@@ -15,9 +15,18 @@ class TodoRepository extends EntityRepository implements IBaseRepository
         $this->entityRepository = $this->entityManager->getRepository('Todo');
     }
 
-    public function getAll(): array
+    public function getAll(int $pageNumber): array
     {
-        $result = $this->entityRepository->findAll();
+        $resultCount = 2;
+        $result = $this->entityManager
+            ->createQueryBuilder()
+            ->select('d')
+            ->from('Todo', 'd')
+            ->setFirstResult($pageNumber)
+            ->setMaxResults($resultCount)
+            ->getQuery()
+            ->getResult();
+//        $result = $this->entityRepository->findAll();
         return $result;
     }
     public function getById(int $id) : object

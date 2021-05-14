@@ -15,8 +15,32 @@ class TodoController
         $this->todoRepository = new TodoRepository();
     }
 
-    public function getAll(ServerRequestInterface $request) : array {
-        return $this->todoRepository->getAll();
+    public function getAll(ServerRequestInterface $request, array $args) : array {
+        $pageNumber = 0;
+        if (isset($args['pageNumber'])) {
+            $pageNumber = $args['pageNumber'];
+        }
+        if (isset($args['value']) && isset($args['key'])) {
+            $filterKey = $args['value'];
+            $filterValue = $args['key'];
+//            print_r($filterKey);
+//            print_r($filterValue)
+        }
+        return $this->todoRepository->getAll($pageNumber);
+    }
+
+    public function getAllFilter(ServerRequestInterface $request, array $args) : array {
+        $pageNumber = 0;
+        if (isset($args['pageNumber'])) {
+            $pageNumber = $args['pageNumber'];
+        }
+//        if (isset($args['value']) && isset($args['key'])) {
+//            $filterKey = $args['value'];
+//            $filterValue = $args['key'];
+//            print_r($filterKey);
+//            print_r($filterValue)
+//        }
+        return $this->todoRepository->getAll($pageNumber);
     }
 
     public function getById(ServerRequestInterface $request, array $args) : object {
